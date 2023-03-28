@@ -1,3 +1,5 @@
+package com.example.mem_overwrite
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -21,14 +23,18 @@ class MainActivity : AppCompatActivity() {
             try {
                 val process = Runtime.getRuntime().exec(command)
                 val reader = BufferedReader(InputStreamReader(process.inputStream))
+                val errorReader = BufferedReader(InputStreamReader(process.errorStream))
                 val output = StringBuilder()
                 var line: String?
                 while (reader.readLine().also { line = it } != null) {
                     output.append(line).append("\n")
                 }
+                while (errorReader.readLine().also { line = it } != null) {
+                    output.append(line).append("\n")
+                }
                 resultText.text = output.toString()
             } catch (e: Exception) {
-                resultText.text = "Error executing command: ${e.message}"
+                resultText.text = "Error executing command: ${e.message}\n\n${e.stackTraceToString()}"
             }
         }
     }
