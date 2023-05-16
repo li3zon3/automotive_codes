@@ -1,3 +1,5 @@
+import re
+
 exception = [11, 22, 33]
 
 def reduce_num(num):
@@ -28,13 +30,46 @@ def calc_life_number(dob):
     return [type1, type2, type3]
     
 def calc_destiny_number(name):
-    name = name
+    sum_parts = []
+    name_parts = name.split()
+    for part in name_parts:
+        s = sum(list(map(lambda c: (ord(c) - 0x41) % 9 + 1, list(part))))
+        sum_parts.append(s)
+        
+    type1 = reduce_num(sum([reduce_num(part) for part in sum_parts]))
+    
+    return [type1]
+    
+def calc_soul_number(name):
+    name = re.sub("[AEIOUY]","",name)
+    
+    sum_parts = []
+    name_parts = name.split()
+    for part in name_parts:
+        s = sum(list(map(lambda c: (ord(c) - 0x41) % 9 + 1, list(part))))
+        sum_parts.append(s)
+        
+    type1 = reduce_num(sum([reduce_num(part) for part in sum_parts]))
+    
+    return [type1]
+    
+def calc_act_number(name):
+    name = re.sub("[^AEIOUY ]","",name)
+    
+    sum_parts = []
+    name_parts = name.split()
+    for part in name_parts:
+        s = sum(list(map(lambda c: (ord(c) - 0x41) % 9 + 1, list(part))))
+        sum_parts.append(s)
+        
+    type1 = reduce_num(sum([reduce_num(part) for part in sum_parts]))
+    
+    return [type1]
 
 name = input("Tên (không dấu): ").upper()
 dob = input("Ngày sinh (ddmmyyyy): ")
 
-life_number = calc_life_number(dob)
-destiny_number = calc_destiny_number(name)
-
-print(f"Số đường đời: {life_number}")
-print(f"Số vận mệnh: {destiny_number}")
+print(f"Số đường đời: {calc_life_number(dob)}")
+print(f"Số vận mệnh: {calc_destiny_number(name)}")
+print(f"Số linh hồn: {calc_soul_number(name)}")
+print(f"Số hành vi: {calc_act_number(name)}")
