@@ -5,7 +5,7 @@
 
 int main(void)
 {
-	char *buf;
+	char *s;
 	unsigned long int i;
 
 	buf = strdup("Need-to-change!");
