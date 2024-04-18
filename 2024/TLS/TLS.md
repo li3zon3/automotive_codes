@@ -102,35 +102,35 @@ The client sends a ClientHello message to server.
 
 The server processes the ClientHello message and determines the appropriate cryptographic parameters for the connection. It then responds with its own ServerHello message, which indicates the negotiated connection parameters. For TLS 1.3, the ServerHello message determines the key and cipher options only. Other handshake parameters may be determined later.
 
-Server parameters: The server sends two messages to establish server parameters:
+**Server parameters**: The server sends two messages to establish server parameters:
 
 **EncryptedExtensions**: This message contains responses to ClientHello extensions that are not required to determine the cryptographic parameters, other than those that are specific to individual certificates.
 
-**CertificateRequest** (optional): If certificate-based client authentication is desired, then the server sends this message, which contains the desired parameters for that certificate. This message is omitted if client authentication is not desired.
+**CertificateRequest (optional)**: If certificate-based client authentication is desired, then the server sends this message, which contains the desired parameters for that certificate. This message is omitted if client authentication is not desired.
 
 **Authentication**:
 
 The server sends these authentication messages:
 
-**Certificate** (optional): This message contains the authentication certificate and any other supporting certificates in the certificate chain. This message is omitted if the server is not authenticating with a certificate.
+**Certificate (optional)**: This message contains the authentication certificate and any other supporting certificates in the certificate chain. This message is omitted if the server is not authenticating with a certificate.
 
-Note:The Certificate message can contain a raw key instead of a certificate.
+**Note**:The Certificate message can contain a raw key instead of a certificate.
 CertificateVerify (optional): This message contains a signature over the entire handshake using the private key corresponding to the public key in the Certificate message. This message is omitted if the server is not authenticating with a certificate.
 
-Finished: a MAC (Message Authentication Code) over the entire handshake.
+**Finished**: a MAC (Message Authentication Code) over the entire handshake.
 
 The client responds with its own Certificate, CertificateVerify, and Finished messages. The Certificate message is omitted if the server did not send a CertificateRequest message. The CertificateVerify message is omitted if the client is not authenticating with a certificate.
 
 The client and server can now securely send application data to each other.
 
-Key Exchange
+**Key Exchange**
 The key exchange messages, ClientHello and ServerHello, determine the security capabilities of the client and the server and establish shared secrets, including the traffic keys used to protect the rest of the handshake and the application data.
 
 **ClientHello**
 
 The TLS handshake begins with the client sending a ClientHello message to the server. This message contains the following fields:
 
-Note:TLS messages may contain additional fields than the ones listed here; see the TLS 1.3 specification for full details about TLS messages and their fields.
+**Note**:TLS messages may contain additional fields than the ones listed here; see the TLS 1.3 specification for full details about TLS messages and their fields.
 **cipher_suites**: This field contains a list of the symmetric cipher options supported by the client, specifically the record protection algorithm (including secret key length) and a hash to be used with Keyed-Hash Message Code (HMAC)-based Extract-and-Expand Key Derivation Function (HKDF).
 
 **extensions**: Extensions facilitates the addition of new features to the TLS protocol with minimal impact to existing clients. Extensions that the ClientHello message may contain, but are not limited to, the following:
@@ -169,7 +169,7 @@ The server responds to the client’s ClientHello message with a ServerHello mes
 
 The server sends other extensions separately in the EncryptedExtensions message.
 
-Server Parameters
+**Server Parameters**
 After the server sends a ServerHello message to the client, it sends two messages to establish server parameters: EncryptedExtensions and CertificateRequest:
 
 **EncryptedExtensions**: This message contains responses to ClientHello extensions that are not required to determine cryptographic parameters other than those that are specific to individual certificates.
@@ -188,28 +188,28 @@ After the server sends a ServerHello message to the client, it sends two message
 
 **supported_groups**: This message contains named groups that the server prefers. The client may use this information to change what groups it uses in its key_share extension in subsequent connections.
 
-Authentication
+**Authentication**
 The last three messages that the server and client send to each other in a TLS handshake are Certificate, CertificateVerify, and Finished.
 
-Certificate
+**Certificate**
 
 This message contains the authentication certificate and any other supporting certificates in the certificate chain. The server must send this message if the key exchange method uses certificates for authentication. The client must send this if and only if the server requested client authentication through a CertificateRequest message. The certificate message includes the following fields:
 
-certificate_list: This field contains a sequence of CertificateEntry structures, each containing a single certificate and a set of extensions
+**certificate_list**: This field contains a sequence of CertificateEntry structures, each containing a single certificate and a set of extensions
 
-extensions: Extensions that the Certificate message may contain include the following:
+**extensions**: Extensions that the Certificate message may contain include the following:
 
-status_request: See Client-Driven OCSP and OCSP Stapling
+**status_request**: See Client-Driven OCSP and OCSP Stapling
 
-signed_certificate_timestamp: TLS clients won’t accept certificates unless they are logged. When a valid certificate is submitted to a log, the log must return a Signed Certificate Timestamp (SCT); see RFC 6962: Certificate Transparency.
+**signed_certificate_timestamp**: TLS clients won’t accept certificates unless they are logged. When a valid certificate is submitted to a log, the log must return a Signed Certificate Timestamp (SCT); see RFC 6962: Certificate Transparency.
 
-CertificateVerify
+**CertificateVerify**
 
 This message contains a signature over the entire handshake using the private key corresponding to the public key in the Certificate message. It provides proof that the client or the server has the private key corresponding to its certificate. This message includes the following fieds:
 
-algorithm: This field contains the signature algorithm used. See The SunJSSE Provider in JDK Providers Documentation for supported algorithms.
+**algorithm**: This field contains the signature algorithm used. See The SunJSSE Provider in JDK Providers Documentation for supported algorithms.
 
-signature: This field contains the digital signature using the algorithm.
+**signature**: This field contains the digital signature using the algorithm.
 
 Finished
 
